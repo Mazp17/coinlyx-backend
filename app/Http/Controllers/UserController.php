@@ -16,7 +16,10 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        return new UserCollection(User::where('role', 'user')->latest()->get());
+        $perPage = $request->query('perPage', 10);
+        $page = $request->query('page', 1);
+
+        return new UserCollection(User::where('role', 'user')->latest()->paginate($perPage, ["*"], 'page', $page));
     }
 
     public function show(Request $request, $id)
