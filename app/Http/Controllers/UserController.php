@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +22,7 @@ class UserController extends Controller
     {
         $user = \App\Models\User::find($id);
 
-        if(!$user) {
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
@@ -38,7 +39,7 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
-        dd($request);
+
         $user = User::create([
             'first_name' => $request->firstName,
             'last_name' => $request->lastName,
@@ -48,9 +49,19 @@ class UserController extends Controller
             'role' => 'user',
         ]);
 
-        return response()->json([
-            'user' => $user,
-        ], 201);
-    }
+        Account::create([
+            'user_id' => $user->id,
+            'balance' => 0,
+        ]);
 
+        return response()
+            ->json([
+                'user' => $user,
+            ], 201)
+            ->withHeaders([
+                'Access-Control-Allow-Origin' => 'http://localhost:5173/',
+                'Access-Control-Allow-Methods' => 'GET, POST, PUT, OPTIONS',
+                'Access-Control-Allow-Headers' => 'Origin, Content-Type, X-Auth-Token , Cookie',
+            ]);
+    }
 }
