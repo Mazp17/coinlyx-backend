@@ -42,7 +42,7 @@ class TransactionController extends Controller
             ], 404);
         }
 
-        if($request->type === 'withdrawal' && $account->balance < $request->amount) {
+        if ($request->type === 'withdrawal' && $account->balance < $request->amount) {
             return response()->json([
                 'ok' => false,
                 'error' => 'Insufficient funds'
@@ -54,14 +54,14 @@ class TransactionController extends Controller
             'type' => $request->type,
         ]);
 
-        if($request->type === 'deposit') {
+        if ($request->type === 'deposit') {
             $account->balance += $request->amount;
         }
 
-        if($request->type === 'withdrawal') {
+        if ($request->type === 'withdrawal') {
             $account->balance -= $request->amount;
         }
-
+        $account->save();
         return response()->json([
             'ok' => true,
             'data' => [
