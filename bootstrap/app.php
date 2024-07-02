@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\LogUserAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -11,6 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->append(LogUserAccess::class);
         $middleware->validateCsrfTokens(except: [
             'http://localhost:5173/*',
         ]);
