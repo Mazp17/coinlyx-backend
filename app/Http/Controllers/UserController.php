@@ -6,6 +6,7 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\Account;
 use App\Models\User;
+use Faker\Core\Number;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -52,6 +53,7 @@ class UserController extends Controller
         Account::create([
             'user_id' => $user->id,
             'balance' => 0,
+            'account_number' => rand(0, 99999999),
         ]);
 
         return response()
