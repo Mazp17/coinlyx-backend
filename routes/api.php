@@ -7,6 +7,7 @@ Route::middleware('auth.bearer')->group(function () {
     Route::resource('transactions', \App\Http\Controllers\TransactionController::class)->only(['index', 'store']);
     Route::get('/transactions/account/{accountNumber}', [\App\Http\Controllers\TransactionController::class, 'getByAccountNumber']);
     Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
+    Route::get('/download-activity-log', [\App\Http\Controllers\ActivityLogController::class, 'downloadLog']);
 });
 
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
